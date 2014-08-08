@@ -11,7 +11,7 @@ class Request {
 	public function __construct($method, $resource, $params, $format) {
 		$this->method = $method;
 		$this->resource = $resource;
-		$this->format = $format;
 		$this->params = $params;
+		$this->format = $format;
 	}
 }
