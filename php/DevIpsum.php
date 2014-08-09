@@ -35,6 +35,8 @@ abstract class DevIpsum {
 			if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
 				header('Access-Control-Allow-Methods: GET, OPTIONS');
 			}
+
+			exit(0);
 		}
 
 		// ip
