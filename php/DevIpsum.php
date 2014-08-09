@@ -14,6 +14,8 @@ abstract class DevIpsum {
 			$host = $_SERVER['HTTP_HOST'];
 		}
 
+		$api = ($host === Config::API_HOST);
+
 		// method
 		$method = null;
 		if (isset($_SERVER['REQUEST_METHOD'])) {
@@ -59,7 +61,7 @@ abstract class DevIpsum {
 
 		// request
 		$resource = null;
-		$format = ($host === Config::WWW_HOST ? 'html' : 'json');
+		$format = ($api ? 'json' : 'html');
 		if (isset($_SERVER['REQUEST_URI'])) {
 			$request = $_SERVER['REQUEST_URI'];
 			$request = preg_replace('/\?.*$/', '', $request);
@@ -77,7 +79,12 @@ abstract class DevIpsum {
 		}
 
 		// handler
-		$handler = Handler::factory($host, $method, $resource, $params, $format);
+		if ($api) {
+			$handler = Handler::apiFactory($method, $resource, $params, $format);
+		} else {
+			$handler = Handler::wwwFactory($method, $resource, $params, $format);
+		}
+
 		$handler->handle();
 		$handler->view();
 	}

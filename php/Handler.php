@@ -18,7 +18,9 @@ class Handler {
 	];
 
 	static public $formats = [
-		'html' => 'html',
+		'home' => 'home.html',
+		'error' => 'error.html',
+
 		'json' => 'json',
 		'xml' => 'xml'
 	];
@@ -27,6 +29,7 @@ class Handler {
 	public $resouce;
 	public $params;
 	public $format;
+	public $view;
 
 	public $request;
 	public $response;
@@ -36,6 +39,8 @@ class Handler {
 		$this->resource = $resource;
 		$this->params = $params;
 		$this->format = $format;
+
+		$this->view = null;
 
 		$this->response = new Response();
 	}
@@ -55,7 +60,7 @@ class Handler {
 		$result = $this->response->getResult();
 		$status = $this->response->getStatus();
 
-		print_r($request); print_r($result); print_r($status);
+		//print_r($request); print_r($result); print_r($status);
 
 		foreach ($result as $key => $val) {
 			if ($key === 'request' || $key === 'result' || $key === 'status') {
@@ -67,52 +72,85 @@ class Handler {
 			$$key = $val;
 		}
 
-		include __DIR__ . '/views/' . self::$formats[$this->format] . '.php';
+		if ($this->view === null) {
+			$this->view = $this->format;
+		}
+
+		include __DIR__ . '/views/' . self::$formats[$this->view] . '.php';
 	}
 
 	// factory
 
-	static public function factory($host, $method, $resource, $params, $format) {
+	static public function apiFactory($method, $resource, $params, $format) {
 		$action = (isset(self::$actions[$method]) ? self::$actions[$method] : strtolower($method));
 
-		$api = ($host === Config::API_HOST);
-
 		if (!isset(self::$formats[$format])) {
-			$handler = new self($action, $resource, $params, ($api ? 'json' : 'html'));
+			$handler = new self($action, $resource, $params, 'json');
+			$handler->handle();
 			$handler->response->notImplemented('Format not supported: "' . $format . '"');
 			return $handler;
 		}
 
 		if ($action !== 'read') {
 			$handler = new self($action, $resource, $params, $format);
+			$handler->handle();
 			$handler->response->methodNotAllowed('Method not allowed: "' . $method . '"');
 			return $handler;
 		}
 
-		if ($api) {
-			if ($resource === 'user') {
-				return new User($action, $resource, $params, $format);
-			}
+		if ($resource === 'user') {
+			return new User($action, $resource, $params, $format);
+		}
 
-			if ($resource === 'text') {
-				return new Text($action, $resource, $params, $format);
-			}
-		} else {
-			if ($format !== 'html') {
-				$handler = new self($action, $resource, $params, 'html');
-				$handler->response->notFound('Format not supported: "' . $format . '"');
-				$handler->response->h1 = '404 not found';
-				$handler->response->content = '';
-				return $hander;
-			}
-
-			if ($resource === '') {
-				return new Home($action, $resource, $params, $format);
-			}
+		if ($resource === 'text') {
+			return new Text($action, $resource, $params, $format);
 		}
 
 		$handler = new self($action, $resource, $params, $format);
+		$handler->handle();
 		$handler->response->badRequest();
+		return $handler;
+	}
+
+	static public function wwwFactory($method, $resource, $params, $format) {
+		$action = (isset(self::$actions[$method]) ? self::$actions[$method] : strtolower($method));
+
+		if ($format !== 'html') {
+			$handler = new self($action, $resource, $params, 'html');
+			$handler->handle();
+			$handler->response->notImplemented('Format not supported: "' . $format . '"');
+			$handler->view = 'error';
+			$handler->response->h1 = '404 not found';
+			$handler->response->content = '';
+			return $handler;
+		}
+
+		if ($action !== 'read') {
+			$handler = new self($action, $resource, $params, $format);
+			$handler->handle();
+			$handler->response->methodNotAllowed('Method not allowed: "' . $method . '"');
+			return $handler;
+		}
+
+		if ($format !== 'html') {
+			$handler = new self($action, $resource, $params, 'html');
+			$handler->handle();
+			$handler->response->notFound('Format not supported: "' . $format . '"');
+			$handler->response->h1 = '404 not found';
+			$handler->response->content = '';
+			return $hander;
+		}
+
+		if ($resource === '') {
+			return new Home($action, $resource, $params, $format);
+		}
+
+		$handler = new self($action, $resource, $params, $format);
+		$handler->handle();
+		$handler->view = 'error';
+		$handler->response->badRequest();
+		$handler->response->h1 = '404 not found';
+		$handler->response->content = '';
 		return $handler;
 	}
 }

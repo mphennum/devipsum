@@ -13,7 +13,9 @@ class Home extends Handler {
 	public function handle() {
 		parent::handle();
 
+		$this->view = 'home';
+
 		$this->response->h1 = 'Randomly generated development ipsum';
-		$this->response->content = '';
+		$this->response->content = '<p>source: <a href="//github.com/mphennum/devipsum/">github.com/mphennum/devipsum/</a></p>';
 	}
 }
