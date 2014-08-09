@@ -12,5 +12,8 @@ class Home extends Handler {
 
 	public function handle() {
 		parent::handle();
+
+		$this->response->h1 = 'Randomly generated development ipsum';
+		$this->response->content = '';
 	}
 }

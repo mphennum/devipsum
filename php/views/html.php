@@ -13,6 +13,8 @@
 
 <body>
 
+<header><a href="http://<?= DevIpsum\Config::WWW_HOST ?>/">devipsum</a></header>
+
 <h1><?= $h1 ?></h1>
 
 <main><?= $content ?></main>
