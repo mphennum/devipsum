@@ -3,8 +3,8 @@ devipsum
 
 Lorem ipsum for development. Randomly generated users, text, images, etc.
 
-www.devipsum.com
+[devipsum.com](http://www.devipsum.com/)
 
-github.com/mphennum/devipsum
+[github repo](//github.com/mphennum/devipsum/)
 
-github.com/mphennum/devipsum/wiki
+[documentation](//github.com/mphennum/devipsum/wiki/)
