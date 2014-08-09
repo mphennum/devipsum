@@ -60,7 +60,7 @@ class Handler {
 		$result = $this->response->getResult();
 		$status = $this->response->getStatus();
 
-		//print_r($request); print_r($result); print_r($status);
+		//echo json_encode($request, JSON_PRETTY_PRINT), "\n", json_encode($result, JSON_PRETTY_PRINT), "\n", json_encode($status, JSON_PRETTY_PRINT), "\n";
 
 		foreach ($result as $key => $val) {
 			if ($key === 'request' || $key === 'result' || $key === 'status') {
@@ -83,6 +83,10 @@ class Handler {
 
 	static public function apiFactory($method, $resource, $params, $format) {
 		$action = (isset(self::$actions[$method]) ? self::$actions[$method] : strtolower($method));
+
+		foreach ($params as &$param) {
+			$param = self::decodeParam($param);
+		}
 
 		if (!isset(self::$formats[$format])) {
 			$handler = new self($action, $resource, $params, 'json');
@@ -115,6 +119,10 @@ class Handler {
 	static public function wwwFactory($method, $resource, $params, $format) {
 		$action = (isset(self::$actions[$method]) ? self::$actions[$method] : strtolower($method));
 
+		foreach ($params as &$param) {
+			$param = self::decodeParam($param);
+		}
+
 		if ($format !== 'html') {
 			$handler = new self($action, $resource, $params, 'html');
 			$handler->handle();
@@ -142,7 +150,7 @@ class Handler {
 		}
 
 		if ($resource === '') {
-			return new Home($action, $resource, $params, $format);
+			return new Home($action, 'home', $params, $format);
 		}
 
 		$handler = new self($action, $resource, $params, $format);
@@ -152,5 +160,42 @@ class Handler {
 		$handler->response->h1 = '404 not found';
 		$handler->response->content = '';
 		return $handler;
+	}
+
+	// params
+
+	static private function decodeParam($param) {
+		$param = rawurldecode($param);
+
+		if ($param === '' || $param === 'true') {
+			return true;
+		}
+
+		if ($param === 'false') {
+			return false;
+		}
+
+		if ($param === 'null') {
+			return null;
+		}
+
+		if (preg_match('/^[0-9]+$/', $param)) {
+			return (int) $param;
+		}
+
+		if (preg_match('/^[0-9]?\.[0-9]+$/', $param)) {
+			return (float) $param;
+		}
+
+		if (preg_match('/^[^,]+(,[^,]+)+$/', $param)) {
+			$params = explode(',', $param);
+			foreach ($params as &$param) {
+				$param = self::decodeParam($param);
+			}
+
+			return $params;
+		}
+
+		return $param;
 	}
 }
