@@ -11,6 +11,6 @@ class User extends Handler {
 	}
 
 	public function handle() {
-
+		parent::handle();
 	}
 }

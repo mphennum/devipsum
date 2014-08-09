@@ -11,6 +11,6 @@ class Docs extends Handler {
 	}
 
 	public function handle() {
-
+		parent::handle();
 	}
 }

@@ -11,6 +11,6 @@ class Text extends Handler {
 	}
 
 	public function handle() {
-
+		parent::handle();
 	}
 }

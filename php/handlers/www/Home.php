@@ -11,5 +11,6 @@ class Home extends Handler {
 	}
 
 	public function handle() {
+		parent::handle();
 	}
 }
