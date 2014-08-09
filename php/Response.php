@@ -39,6 +39,8 @@ class Response {
 
 	public function __construct() {
 		$this->status = [];
+		$this->setStatus(self::OK);
+
 		$this->result = [];
 	}
 
