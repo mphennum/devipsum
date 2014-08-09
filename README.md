@@ -1,4 +1,6 @@
 devipsum
 ========
 
-Lorem ipsum for web developers. Fill development sites with users, text, images, etc.
+Lorem ipsum for development. Randomly generated users, text, images, etc.
+
+www.devipsum.com
