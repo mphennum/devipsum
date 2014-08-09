@@ -7,7 +7,6 @@ require __DIR__ . '/Database.php';
 require __DIR__ . '/DevIpsum.php';
 require __DIR__ . '/Handler.php';
 require __DIR__ . '/Response.php';
-require __DIR__ . '/Request.php';
 
 require __DIR__ . '/handlers/api/User.php';
 require __DIR__ . '/handlers/api/Text.php';
