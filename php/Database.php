@@ -6,12 +6,6 @@ use PDO;
 
 abstract class Database {
 
-	const UUID_LEN = 32;
-	const ID_MIN = 0;
-	const ID_MAX = 4294967295;
-
-	static public $uuidChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_';
-
 	static private $pdo;
 
 	// init
@@ -88,17 +82,17 @@ abstract class Database {
 	}
 
 	static public function randIntID() {
-		return mt_rand(self::ID_MIN, self::ID_MAX);
+		return mt_rand(Config::ID_MIN, Config::ID_MAX);
 	}
 
 	static public function randUUID($table) {
-		$max = strlen(self::$uuidChars) - 1;
+		$max = strlen(Config::$uuidChars) - 1;
 
 		$row = true;
 		while ($row !== null) {
 			$id = '';
-			for ($i = 0; $i < self::UUID_LEN; ++$i) {
-				$id .= self::$uuidChars{mt_rand(0, $max)};
+			for ($i = 0; $i < Config::UUID_LEN; ++$i) {
+				$id .= Config::$uuidChars{mt_rand(0, $max)};
 			}
 
 			$row = self::readOne($table, '`id` = :id', [':id' => $id]);
