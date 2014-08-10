@@ -31,16 +31,12 @@ abstract class Database {
 
 		$sql = 'INSERT INTO `' . $table . '` (' . $fields . ') VALUES (' . $values . ');';
 		$statement = self::$pdo->prepare($sql);
-
 		return $statement->execute($pdovars);
 	}
 
 	static public function read($table, $where = null, $pdovars = [], $limit = 100) {
 		$sql = 'SELECT * FROM `' . $table . '`' . ($where === null ? '' : ' WHERE ' . $where) . ' LIMIT ' . (int) $limit . ';';
-		$statement = self::$pdo->prepare($sql);
-
-		$statement->execute($pdovars);
-		return $statement->fetchAll(PDO::FETCH_ASSOC);
+		return self::fetchAll($sql, $pdovars);
 	}
 
 	static public function readOne($table, $where = null, $pdovars = []) {
@@ -48,25 +44,44 @@ abstract class Database {
 		return (count($rows) === 0 ? null : $rows[0]);
 	}
 
+	// nothing needs to be updated yet
 	static public function update() {
-		// do nothing
+		return false;
 	}
 
+	// nothing should ever be deleted
 	static public function delete() {
-		// do nothing
+		return false;
 	}
 
 	static public function count($table, $where = null, $pdovars = []) {
 		$sql = 'SELECT count(*) FROM `' . $table . '`' . ($where === null ? '' : ' WHERE ' . $where) . ';';
+		$row = self::fetch($sql, $pdovars);
+		return ($row === null ? null : $row['count(*)']);
+	}
+
+	// pdo
+
+	static public function execute($sql, $pdovars = []) {
 		$statement = self::$pdo->prepare($sql);
 		$statement->execute($pdovars);
+		return $statement;
+	}
+
+	static public function fetch($sql, $pdovars = []) {
+		$statement = self::execute($sql, $pdovars);
 
 		if ($statement->rowCount() === 0) {
 			return null;
 		}
 
-		$row = $statement->fetch(PDO::FETCH_NUM);
-		return $row[0];
+		$row = $statement->fetch(PDO::FETCH_ASSOC);
+		return $row;
+	}
+
+	static public function fetchAll($sql, $pdovars = []) {
+		$statement = self::execute($sql, $pdovars);
+		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	// rand IDs
