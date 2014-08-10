@@ -44,6 +44,12 @@ class User extends Handler {
 		$states = Database::read('states');
 		$maxState = count($states) - 1;
 
+		// cities
+		$cities = Database::read('cities');
+		foreach ($cities as $city) {
+
+		}
+
 		$n = (isset($this->params['n']) ? $this->params['n'] : 1);
 		for ($i = 0; $i < $n; ++$i) {
 			// names

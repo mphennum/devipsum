@@ -58,7 +58,7 @@ abstract class Row {
 
 	public function readOne($id) {
 		$row = Database::readOne($this->table, 'id = :id', [':id' => $id]);
-		if ($row !== null) {
+		if ($row === null) {
 			return false;
 		}
 
