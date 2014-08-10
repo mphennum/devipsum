@@ -4,7 +4,7 @@ namespace DevIpsum;
 
 abstract class DevIpsum {
 	static public function init() {
-
+		Database::init();
 	}
 
 	static public function handle() {
@@ -79,13 +79,17 @@ abstract class DevIpsum {
 		}
 
 		// handler
-		if ($api) {
-			$handler = Handler::apiFactory($method, $resource, $params, $format);
-		} else {
-			$handler = Handler::wwwFactory($method, $resource, $params, $format);
-		}
+		try {
+			if ($api) {
+				$handler = Handler::apiFactory($method, $resource, $params, $format);
+			} else {
+				$handler = Handler::wwwFactory($method, $resource, $params, $format);
+			}
 
-		$handler->handle();
-		$handler->view();
+			$handler->handle();
+			$handler->view();
+		} catch (Exception $exception) {
+			// handle internal server errors
+		}
 	}
 }
