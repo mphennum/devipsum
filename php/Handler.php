@@ -4,7 +4,6 @@ namespace DevIpsum;
 
 use DevIpsum\Handlers\API\User;
 use DevIpsum\Handlers\API\Text;
-
 use DevIpsum\Handlers\WWW\Docs;
 use DevIpsum\Handlers\WWW\Home;
 
