@@ -8,6 +8,8 @@ abstract class DevIpsum {
 	}
 
 	static public function handle() {
+		ob_start();
+
 		// host
 		$host = null;
 		if (isset($_SERVER['HTTP_HOST'])) {
@@ -87,6 +89,7 @@ abstract class DevIpsum {
 			}
 
 			$handler->handle();
+			ob_end_clean();
 			$handler->view();
 		} catch (Exception $exception) {
 			// handle internal server errors

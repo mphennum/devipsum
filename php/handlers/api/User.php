@@ -27,11 +27,12 @@ class User extends Handler {
 
 		for ($i = 0; $i < $n; ++$i) {
 			$first = $names['first'][mt_rand(0, $maxFirst)];
+			$last = $names['last'][mt_rand(0, $maxLast)];
 
 			$users[] = [
 				'name' => [
 					'first' => $first['name'],
-					'last' => $names['last'][mt_rand(0, $maxLast)]['name']
+					'last' => $last['name']
 				],
 				'gender' => $first['gender'],
 				'born' => '',
