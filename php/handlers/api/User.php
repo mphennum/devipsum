@@ -83,7 +83,7 @@ class User extends Handler {
 						'facebook' => 'http://www.facebook.com/' . $short,
 						'twitter' => 'http://twitter.com/' . $short
 					],
-					'website' => ''
+					'website' => 'http://www.' . $short . '.com/'
 				]
 			];
 		}
