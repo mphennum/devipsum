@@ -40,6 +40,10 @@ class User extends Handler {
 		$emailDomains = Database::read('domains', 'type = :type', [':type' => 'email']);
 		$maxDomain = count($emailDomains) - 1;
 
+		// states
+		$states = Database::read('states');
+		$maxState = count($states) - 1;
+
 		$n = (isset($this->params['n']) ? $this->params['n'] : 1);
 		for ($i = 0; $i < $n; ++$i) {
 			// names
@@ -56,6 +60,9 @@ class User extends Handler {
 			// emails
 			$emailDomain = $emailDomains[mt_rand(0, $maxDomain)]['name'];
 
+			// address
+			$state = $states[mt_rand(0, $maxState)]['name'];
+
 			$users[] = [
 				'name' => [
 					'first' => $first['name'],
@@ -71,7 +78,7 @@ class User extends Handler {
 				'address' => [
 					'street' => '',
 					'city' => '',
-					'state' => '',
+					'state' => $state,
 					'country' => '',
 					'zip' => ''
 				],
