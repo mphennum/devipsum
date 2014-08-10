@@ -40,15 +40,9 @@ class User extends Handler {
 		$emailDomains = Database::read('domains', 'type = :type', [':type' => 'email']);
 		$maxDomain = count($emailDomains) - 1;
 
-		// states
-		$states = Database::read('states');
-		$maxState = count($states) - 1;
-
 		// cities
-		$cities = Database::read('cities');
-		foreach ($cities as $city) {
-
-		}
+		$cities = Database::fetchAll('SELECT `cities`.`name` city, `states`.`name` state FROM `cities`, `states` WHERE `cities`.`state` = `states`.`id`;');
+		$maxCity = count($cities) - 1;
 
 		$n = (isset($this->params['n']) ? $this->params['n'] : 1);
 		for ($i = 0; $i < $n; ++$i) {
@@ -67,7 +61,9 @@ class User extends Handler {
 			$emailDomain = $emailDomains[mt_rand(0, $maxDomain)]['name'];
 
 			// address
-			$state = $states[mt_rand(0, $maxState)]['name'];
+			$location = $cities[mt_rand(0, $maxCity)];
+			$city = $location['city'];
+			$state = $location['state'];
 
 			$users[] = [
 				'name' => [
@@ -83,7 +79,7 @@ class User extends Handler {
 				],
 				'address' => [
 					'street' => '',
-					'city' => '',
+					'city' => $city,
 					'state' => $state,
 					'country' => '',
 					'zip' => ''
