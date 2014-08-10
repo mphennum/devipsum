@@ -45,6 +45,7 @@ class User extends Handler {
 			// names
 			$first = $names['first'][mt_rand(0, $maxFirst)];
 			$last = $names['last'][mt_rand(0, $maxLast)];
+			$short = strtolower($first['name']{0} . $last['name']);
 
 			// dates
 			$ts = mt_rand(-631151999, 946684800); // 1950 to 2000
@@ -76,11 +77,11 @@ class User extends Handler {
 				],
 				'contact' => [
 					'phone' => '',
-					'email' => strtolower($first['name']{0} . $last['name']) . '@' . $emailDomain,
+					'email' => $short . '@' . $emailDomain,
 					'social' => [
-						'google' => '',
-						'facebook' => '',
-						'twitter' => ''
+						'google' => 'http://plus.google.com/+' . $short,
+						'facebook' => 'http://www.facebook.com/' . $short,
+						'twitter' => 'http://twitter.com/' . $short
 					],
 					'website' => ''
 				]
