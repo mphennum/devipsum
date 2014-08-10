@@ -13,7 +13,12 @@ require __DIR__ . '/handlers/api/Text.php';
 require __DIR__ . '/handlers/www/Home.php';
 
 require __DIR__ . '/database/Row.php';
+require __DIR__ . '/database/City.php';
+require __DIR__ . '/database/Code.php';
+require __DIR__ . '/database/Domain.php';
+require __DIR__ . '/database/Image.php';
 require __DIR__ . '/database/Name.php';
+require __DIR__ . '/database/State.php';
 
 if (PHP_SAPI === 'cli') {
 	require __DIR__ . '/CLI.php';

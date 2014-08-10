@@ -2,15 +2,13 @@
 
 namespace DevIpsum\Database;
 
-class Name extends Row {
+class Domain extends Row {
 
-	static public $genders = ['male', 'female', 'both'];
-	static public $types = ['first', 'last'];
+	static public $types = ['email'];
 
 	public function __construct() {
-		parent::__construct('names');
+		parent::__construct('domains');
 		$this->fields['name'] = null;
-		$this->fields['gender'] = 'both';
 		$this->fields['type'] = null;
 	}
 
@@ -22,10 +20,6 @@ class Name extends Row {
 		}
 
 		if (!in_array($this->fields['type'], self::$types)) {
-			return false;
-		}
-
-		if (!in_array($this->fields['gender'], self::$genders)) {
 			return false;
 		}
 
