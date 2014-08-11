@@ -116,22 +116,24 @@ abstract class DevIpsum {
 			}
 		} catch (Exception $exception) {
 			// handle internal server errors
-			self::internalError();
+			self::internalError($exception);
 		}
 	}
 
 	static public function fatalHandler() {
 		if (error_get_last() !== null) {
-			self::internalError();
+			self::internalError('A fatal server error has occurred');
 		}
 	}
 
-	static public function internalError() {
+	static public function internalError($message = null) {
 		self::$error = true;
 		$action = (isset(Handler::$actions[self::$method]) ? Handler::$actions[self::$method] : strtolower(self::$method));
+		$message = ($message === null ? 'An unknown error has occurred' : $message);
+
 		$handler = new Handler($action, self::$resource, self::$params, self::$format);
 		$handler->handle();
-		$handler->response->internalError('An unknown error has occurred');
+		$handler->response->internalError($message);
 		$handler->view();
 	}
 }

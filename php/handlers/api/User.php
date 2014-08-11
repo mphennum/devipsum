@@ -41,8 +41,8 @@ class User extends Handler {
 		$maxDomain = count($emailDomains) - 1;
 
 		// cities
-		$cities = Database::fetchAll('SELECT `cities`.`name` city, `states`.`name` state FROM `cities`, `states` WHERE `cities`.`state` = `states`.`id`;');
-		$maxCity = count($cities) - 1;
+		$locations = Database::fetchAll('SELECT `cities`.`name` city, `states`.`name` state, `streets`.`name` street FROM `cities`, `states`, `streets` WHERE `cities`.`state` = `states`.`id`;');
+		$maxLocation = count($locations) - 1;
 
 		$n = (isset($this->params['n']) ? $this->params['n'] : 1);
 		for ($i = 0; $i < $n; ++$i) {
@@ -61,9 +61,10 @@ class User extends Handler {
 			$emailDomain = $emailDomains[mt_rand(0, $maxDomain)]['name'];
 
 			// address
-			$location = $cities[mt_rand(0, $maxCity)];
+			$location = $locations[mt_rand(0, $maxLocation)];
 			$city = $location['city'];
 			$state = $location['state'];
+			$street = mt_rand(100, 9999) . ' ' . $location['street'];
 
 			$users[] = [
 				'name' => [
@@ -78,14 +79,14 @@ class User extends Handler {
 					'ts' => $ts
 				],
 				'address' => [
-					'street' => '',
+					'street' => $street,
 					'city' => $city,
 					'state' => $state,
-					'country' => '',
-					'zip' => ''
+					'country' => 'USA',
+					'zip' => null
 				],
 				'contact' => [
-					'phone' => '',
+					'phone' => null,
 					'email' => $short . '@' . $emailDomain,
 					'social' => [
 						'google' => 'http://plus.google.com/+' . $short,

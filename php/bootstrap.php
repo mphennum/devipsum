@@ -19,6 +19,7 @@ require __DIR__ . '/database/Domain.php';
 require __DIR__ . '/database/Image.php';
 require __DIR__ . '/database/Name.php';
 require __DIR__ . '/database/State.php';
+require __DIR__ . '/database/Street.php';
 
 if (PHP_SAPI === 'cli') {
 	require __DIR__ . '/CLI.php';

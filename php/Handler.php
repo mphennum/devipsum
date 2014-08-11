@@ -75,9 +75,9 @@ class Handler {
 			$this->view = $this->format;
 		}
 
-		ob_start('ob_gzhandler');
+		//ob_start('ob_gzhandler');
 		include __DIR__ . '/views/' . self::$formats[$this->view] . '.php';
-		ob_end_flush();
+		//ob_end_flush();
 	}
 
 	// factory
