@@ -17,7 +17,7 @@ class Name extends Row {
 	// fields
 
 	public function hasValidFields() {
-		if ($this->fields['name'] === null) {
+		if (!isset($this->fields['name'])) {
 			return false;
 		}
 

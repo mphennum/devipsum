@@ -83,12 +83,13 @@ class User extends Handler {
 					'city' => $city,
 					'state' => $state,
 					'country' => 'USA',
-					'zip' => null
+					'zip' => mt_rand(12345, 98765)
 				],
 				'contact' => [
-					'phone' => null,
+					'phone' => '(' . mt_rand(111, 999) . ') ' . mt_rand(111, 999) . '-' . mt_rand(1111, 9999),
 					'email' => $short . '@' . $emailDomain,
 					'social' => [
+						'profile' => null,
 						'google' => 'http://plus.google.com/+' . $short,
 						'facebook' => 'http://www.facebook.com/' . $short,
 						'twitter' => 'http://twitter.com/' . $short

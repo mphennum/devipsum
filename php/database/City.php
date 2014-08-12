@@ -2,6 +2,8 @@
 
 namespace DevIpsum\Database;
 
+use DevIpsum\Database;
+
 class City extends Row {
 
 	public function __construct() {
@@ -13,14 +15,24 @@ class City extends Row {
 	// fields
 
 	public function hasValidFields() {
-		if ($this->fields['state'] === null) {
+		if (!isset($this->fields['state'])) {
 			return false;
 		}
 
-		if ($this->fields['name'] === null) {
+		if (!isset($this->fields['name'])) {
 			return false;
 		}
 
+		return true;
+	}
+
+	public function readOneNameState($name, $state) {
+		$row = Database::readOne($this->table, 'name = :name AND state = :state', [':name' => $name, ':state' => $state]);
+		if ($row === null) {
+			return false;
+		}
+
+		$this->fields = $row;
 		return true;
 	}
 }
