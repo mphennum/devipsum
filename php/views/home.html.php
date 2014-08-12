@@ -15,9 +15,14 @@
 
 <header><a href="http://<?= DevIpsum\Config::WWW_HOST ?>/">devipsum</a></header>
 
-<h1><?= $h1 ?></h1>
+<h1>Randomly generated development ipsum</h1>
 
-<main><?= $content ?></main>
+<main>
+	<p>source: <a href="//github.com/mphennum/devipsum/">github.com/mphennum/devipsum</a></p>
+	<p>docs: <a href="//github.com/mphennum/devipsum/wiki/">github.com/mphennum/devipsum/wiki</a></p>
+	<h2>Example</h2>
+	<p>request: <a href="http://api.devipsum.com/user.json?n=10">api.devipsum.com/user.json?n=10</a></p>
+</main>
 
 </body>
 

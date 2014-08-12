@@ -24,6 +24,12 @@ class User extends Handler {
 	public function handle() {
 		parent::handle();
 
+		$n = (isset($this->params['n']) ? $this->params['n'] : 1);
+		if ((int) $n !== $n || $n > 100 || $n < 1) {
+			$this->response->rangeNotSatisfiable('Number of users must be an integer between 1 and 100');
+			return;
+		}
+
 		// names
 
 		$names = [
@@ -51,7 +57,6 @@ class User extends Handler {
 		$locations = Database::fetchAll('SELECT `cities`.`name` city, `states`.`name` state, `streets`.`name` street FROM `cities`, `states`, `streets` WHERE `cities`.`state` = `states`.`id`;');
 		$maxLocation = count($locations) - 1;
 
-		$n = (isset($this->params['n']) ? $this->params['n'] : 1);
 		for ($i = 0; $i < $n; ++$i) {
 			// names
 			$first = $names['first'][mt_rand(0, $maxFirst)];
