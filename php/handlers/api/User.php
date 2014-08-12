@@ -4,11 +4,18 @@ namespace DevIpsum\Handlers\API;
 
 use DateTime;
 
+use DevIpsum\Config;
 use DevIpsum\DevIpsum;
 use DevIpsum\Handler;
 use DevIpsum\Database;
 
 class User extends Handler {
+
+	static public $profiles = [
+		'both' => 1,
+		'male' => 9,
+		'female' => 10
+	];
 
 	public function __construct($method, $resource, $params, $format) {
 		parent::__construct($method, $resource, $params, $format);
@@ -51,6 +58,9 @@ class User extends Handler {
 			$last = $names['last'][mt_rand(0, $maxLast)];
 			$short = strtolower($first['name']{0} . $last['name']);
 
+			// gender
+			$gender = $first['gender'];
+
 			// dates
 			$ts = mt_rand(-631151999, 946684800); // 1950 to 2000
 			$date = new DateTime('now', DevIpsum::$dtz);
@@ -66,13 +76,29 @@ class User extends Handler {
 			$state = $location['state'];
 			$street = mt_rand(100, 9999) . ' ' . $location['street'];
 
+			// profile
+
+			if ($gender === 'male') {
+				$profile = mt_rand(1, self::$profiles['both'] + self::$profiles['male']);
+			} else if ($gender === 'female') {
+				$profile = mt_rand(1, self::$profiles['both'] + self::$profiles['male']);
+			}
+
+			if ($profile > self::$profiles['both']) {
+				$profile = $gender . '-' . $profile . '.png';
+			} else {
+				$profile = 'both-' . $profile . '.png';
+			}
+
+			$profile = 'http://' . Config::IMG_HOST . '/profile/' . $profile;
+
 			$users[] = [
 				'name' => [
 					'first' => $first['name'],
 					'last' => $last['name'],
 					'full' => $first['name'] . ' ' . $last['name']
 				],
-				'gender' => $first['gender'],
+				'gender' => $gender,
 				'birth' => [
 					'date' => $date->format('c'),
 					'age' => $age,
@@ -89,7 +115,7 @@ class User extends Handler {
 					'phone' => '(' . mt_rand(111, 999) . ') ' . mt_rand(111, 999) . '-' . mt_rand(1111, 9999),
 					'email' => $short . '@' . $emailDomain,
 					'social' => [
-						'profile' => null,
+						'profile' => $profile,
 						'google' => 'http://plus.google.com/+' . $short,
 						'facebook' => 'http://www.facebook.com/' . $short,
 						'twitter' => 'http://twitter.com/' . $short

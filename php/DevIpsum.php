@@ -35,7 +35,6 @@ abstract class DevIpsum {
 
 	static public function handle() {
 		register_shutdown_function('DevIpsum\DevIpsum::fatalHandler');
-		ob_start();
 
 		// host
 		if (isset($_SERVER['HTTP_HOST'])) {
@@ -110,7 +109,6 @@ abstract class DevIpsum {
 			}
 
 			$handler->handle();
-			ob_end_clean();
 			if (!self::$error) {
 				$handler->view();
 			}

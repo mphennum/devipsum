@@ -66,10 +66,14 @@ abstract class Row {
 		return true;
 	}
 
-	public function exactExists() {
+	public function exactExists($fields = null) {
+		if ($fields === null) {
+			$fields = $this->fields;
+		}
+
 		$where = '';
 		$pdovars = [];
-		foreach ($this->fields as $key => $value) {
+		foreach ($fields as $key => $value) {
 			if ($key === 'id') {
 				continue;
 			}
