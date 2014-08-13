@@ -3,6 +3,7 @@
 namespace DevIpsum;
 
 require __DIR__ . '/Config.php';
+require __DIR__ . '/Cache.php';
 require __DIR__ . '/Database.php';
 require __DIR__ . '/DevIpsum.php';
 require __DIR__ . '/Handler.php';
