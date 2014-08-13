@@ -2,6 +2,8 @@
 
 namespace DevIpsum;
 
+use Memcached;
+
 abstract class Cache {
 
 	static private $memcached;
@@ -29,7 +31,7 @@ abstract class Cache {
 	}
 
 	static public function get($resource, $params = []) {
-		return self::$memcaches->get(self::getKey($resource, $params));
+		return self::$memcached->get(self::getKey($resource, $params));
 	}
 
 	static public function set($resource, $params = [], $value, $ttl = Config::SHORT_CACHE) {

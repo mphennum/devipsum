@@ -24,7 +24,9 @@ abstract class DevIpsum {
 		self::$ob = true;
 		self::$error = false;
 		self::$dtz = new DateTimeZone('UTC');
+
 		Database::init();
+		Cache::init();
 
 		self::$api = null;
 		self::$host = null;

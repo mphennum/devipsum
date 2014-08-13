@@ -4,6 +4,7 @@ namespace DevIpsum\Handlers\API;
 
 use DateTime;
 
+use DevIpsum\Cache;
 use DevIpsum\Config;
 use DevIpsum\DevIpsum;
 use DevIpsum\Handler;
@@ -33,9 +34,19 @@ class User extends Handler {
 		// names
 
 		$names = [
-			'first' => Database::read('names', 'type = :type', [':type' => 'first']),
-			'last' => Database::read('names',  'type = :type', [':type' => 'last'])
+			'first' => Cache::get('names', ['type' => 'first']),
+			'last' => Cache::get('names', ['type' => 'last'])
 		];
+
+		if (!$names['first']) {
+			$names['first'] = Database::read('names', 'type = :type', [':type' => 'first']);
+			Cache::set('names', ['type' => 'first'], $names['first'], Config::SHORT_CACHE);
+		}
+
+		if (!$names['last']) {
+			$names['last'] = Database::read('names',  'type = :type', [':type' => 'last']);
+			Cache::set('names', ['type' => 'last'], $names['last'], Config::SHORT_CACHE);
+		}
 
 		$maxFirst = count($names['first']) - 1;
 		$maxLast = count($names['last']) - 1;
@@ -50,7 +61,12 @@ class User extends Handler {
 
 		// emails
 
-		$emailDomains = Database::read('domains', 'type = :type', [':type' => 'email']);
+		$emailDomains = Cache::get('domains', ['type' => 'email']);
+		if (!$emailDomains) {
+			$emailDomains = Database::read('domains', 'type = :type', [':type' => 'email']);
+			Cache::set('domains', ['type' => 'email'], $emailDomains, Config::SHORT_CACHE);
+		}
+
 		$maxDomain = count($emailDomains) - 1;
 
 		// cities
