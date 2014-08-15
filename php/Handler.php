@@ -2,6 +2,8 @@
 
 namespace DevIpsum;
 
+use DateTime;
+
 use DevIpsum\Handlers\API\User;
 use DevIpsum\Handlers\API\Text;
 use DevIpsum\Handlers\WWW\Docs;
@@ -49,6 +51,8 @@ class Handler {
 	}
 
 	public function view() {
+		$header = [];
+
 		$request = [
 			'action' => $this->action,
 			'resource' => $this->resource,
@@ -75,9 +79,49 @@ class Handler {
 			$this->view = $this->format;
 		}
 
+
+		$ttl = $status['ttl'];
+
+		$now = new DateTime('now', DevIpsum::$dtz);
+
+		$headers[] = 'HTTP/1.1 ' . $status['code'] . ' ' . $status['message'];
+		$headers[] = 'Date: ' . $now->format('D\, d M Y H:i:s \U\T\C');
+
+		if ($ttl === false) {
+			$headers[] = 'Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0';
+			$headers[] = 'Pragma: no-cache';
+			$headers[] = 'Expires: Mon, 1 Jan 1970 00:00:00 UTC';
+		} else {
+			$duration = max($ttl, Config::MICRO_CACHE) - 1;
+
+			$date = new DateTime('now', DevIpsum::$dtz);
+			$date->setTimestamp($now->getTimestamp() + $duration);
+
+			$headers[] = 'Last-Modified: ' . $now->format('D\, d M Y H:i:s \U\T\C');
+			$headers[] = 'Cache-Control: public, max-age=' . $duration;
+			$headers[] = 'Pragma: cache';
+			$headers[] = 'Expires: ' . $date->format('D\, d M Y H:i:s \U\T\C');
+
+			Cache::set($request['resource'], $request['params'], [
+				'headers' => $headers,
+				'request' => $request,
+				'result' => $result,
+				'status' => $status,
+				'view' => $this->view
+			], $duration);
+		}
+
+		self::trueView($this->view, $headers, $request, $result, $status);
+	}
+
+	static public function trueView($view, $headers, $request, $result, $status) {
 		if (!DevIpsum::$error) {
+			foreach ($headers as $header) {
+				header($header);
+			}
+
 			ob_start('ob_gzhandler');
-			include __DIR__ . '/views/' . self::$formats[$this->view] . '.php';
+			include __DIR__ . '/views/' . self::$formats[$view] . '.php';
 			ob_end_flush();
 		}
 	}
@@ -89,6 +133,12 @@ class Handler {
 
 		foreach ($params as &$param) {
 			$param = self::decodeParam($param);
+		}
+
+		$cache = Cache::get($resource, $params);
+		if ($cache !== false) {
+			self::trueView($cache['view'], $cache['headers'], $cache['request'], $cache['result'], $cache['status']);
+			return null;
 		}
 
 		if (!isset(self::$formats[$format])) {
@@ -124,6 +174,12 @@ class Handler {
 
 		foreach ($params as &$param) {
 			$param = self::decodeParam($param);
+		}
+
+		$cache = Cache::get($resource, $params);
+		if ($cache !== false) {
+			self::trueView($cache['view'], $cache['headers'], $cache['request'], $cache['result'], $cache['status']);
+			return null;
 		}
 
 		if ($format !== 'html') {

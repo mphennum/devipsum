@@ -6,7 +6,6 @@ use DateTimeZone;
 
 abstract class DevIpsum {
 
-	static public $ob;
 	static public $error;
 	static public $dtz;
 
@@ -21,7 +20,6 @@ abstract class DevIpsum {
 
 	static public function init() {
 		ob_start();
-		self::$ob = true;
 		self::$error = false;
 		self::$dtz = new DateTimeZone('UTC');
 
@@ -113,12 +111,12 @@ abstract class DevIpsum {
 				$handler = Handler::wwwFactory(self::$method, self::$resource, self::$params, self::$format);
 			}
 
-			$handler->handle();
-			if (self::$ob) {
+			if ($handler !== null) {
+				$handler->handle();
 				ob_end_clean();
-			}
 
-			$handler->view();
+				$handler->view();
+			}
 		} catch (Exception $exception) {
 			// handle internal server errors
 			self::internalError($exception);
@@ -133,9 +131,7 @@ abstract class DevIpsum {
 
 	static public function internalError($message = null) {
 		self::$error = true;
-		if (self::$ob) {
-			ob_end_clean();
-		}
+		ob_end_clean();
 
 		$action = (isset(Handler::$actions[self::$method]) ? Handler::$actions[self::$method] : strtolower(self::$method));
 		$message = ($message === null ? 'An unknown error has occurred' : $message);

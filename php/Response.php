@@ -88,6 +88,18 @@ class Response {
 		$this->status['code'] = $code;
 		$this->status['message'] = self::$messages[$code];
 		$this->status['reason'] = (string) $reason;
+
+		if (!isset($this->status['ttl'])) {
+			$this->status['ttl'] = false;
+		}
+	}
+
+	public function getTTL() {
+		return $this->status['ttl'] = $ttl;
+	}
+
+	public function setTTL($ttl) {
+		$this->status['ttl'] = $ttl;
 	}
 
 	public function okay($reason = null) {

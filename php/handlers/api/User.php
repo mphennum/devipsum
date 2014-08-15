@@ -70,7 +70,13 @@ class User extends Handler {
 		$maxDomain = count($emailDomains) - 1;
 
 		// cities
-		$locations = Database::fetchAll('SELECT `cities`.`name` city, `states`.`name` state, `streets`.`name` street FROM `cities`, `states`, `streets` WHERE `cities`.`state` = `states`.`id`;');
+		$locations = Cache::get('locations', []);
+
+		if (!$locations) {
+			$locations = Database::fetchAll('SELECT `cities`.`name` city, `states`.`name` state, `streets`.`name` street FROM `cities`, `states`, `streets` WHERE `cities`.`state` = `states`.`id`;');
+			Cache::set('locations', [], $locations, Config::SHORT_CACHE);
+		}
+
 		$maxLocation = count($locations) - 1;
 
 		for ($i = 0; $i < $n; ++$i) {
@@ -146,6 +152,7 @@ class User extends Handler {
 			];
 		}
 
+		$this->response->setTTL(Config::MICRO_CACHE);
 		$this->response->users = $users;
 	}
 }
