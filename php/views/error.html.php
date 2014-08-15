@@ -15,9 +15,9 @@
 
 <header><a href="http://<?= DevIpsum\Config::WWW_HOST ?>/">devipsum</a></header>
 
-<h1><?= $h1 ?></h1>
+<h1>Error 404</h1>
 
-<main><?= $content ?></main>
+<main>The requested page could not be found.</main>
 
 </body>
 

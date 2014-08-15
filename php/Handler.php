@@ -50,9 +50,7 @@ class Handler {
 		// do nothing
 	}
 
-	public function view() {
-		$header = [];
-
+	public function view($server, $force = false) {
 		$request = [
 			'action' => $this->action,
 			'resource' => $this->resource,
@@ -79,11 +77,11 @@ class Handler {
 			$this->view = $this->format;
 		}
 
-
 		$ttl = $status['ttl'];
 
 		$now = new DateTime('now', DevIpsum::$dtz);
 
+		$headers = [];
 		$headers[] = 'HTTP/1.1 ' . $status['code'] . ' ' . $status['message'];
 		$headers[] = 'Date: ' . $now->format('D\, d M Y H:i:s \U\T\C');
 
@@ -102,7 +100,7 @@ class Handler {
 			$headers[] = 'Pragma: cache';
 			$headers[] = 'Expires: ' . $date->format('D\, d M Y H:i:s \U\T\C');
 
-			Cache::set($request['resource'], $request['params'], [
+			Cache::set($server . ':' . $request['resource'], $request['params'], [
 				'headers' => $headers,
 				'request' => $request,
 				'result' => $result,
@@ -111,17 +109,25 @@ class Handler {
 			], $duration);
 		}
 
-		self::trueView($this->view, $headers, $request, $result, $status);
+		self::trueView($this->view, $headers, $request, $result, $status, $force);
 	}
 
-	static public function trueView($view, $headers, $request, $result, $status) {
-		if (!DevIpsum::$error) {
-			foreach ($headers as $header) {
-				header($header);
-			}
+	static public function trueView($view, $headers, $request, $result, $status, $force = false) {
+		if (DevIpsum::$error && !$force) {
+			return;
+		}
 
+		foreach ($headers as $header) {
+			header($header);
+		}
+
+		if (!Config::DEV_MODE) {
 			ob_start('ob_gzhandler');
-			include __DIR__ . '/views/' . self::$formats[$view] . '.php';
+		}
+
+		include __DIR__ . '/views/' . self::$formats[$view] . '.php';
+
+		if (!Config::DEV_MODE) {
 			ob_end_flush();
 		}
 	}
@@ -135,7 +141,7 @@ class Handler {
 			$param = self::decodeParam($param);
 		}
 
-		$cache = Cache::get($resource, $params);
+		$cache = Cache::get('api:' . $resource, $params);
 		if ($cache !== false) {
 			self::trueView($cache['view'], $cache['headers'], $cache['request'], $cache['result'], $cache['status']);
 			return null;
@@ -176,20 +182,10 @@ class Handler {
 			$param = self::decodeParam($param);
 		}
 
-		$cache = Cache::get($resource, $params);
+		$cache = Cache::get('www:' . $resource, $params);
 		if ($cache !== false) {
 			self::trueView($cache['view'], $cache['headers'], $cache['request'], $cache['result'], $cache['status']);
 			return null;
-		}
-
-		if ($format !== 'html') {
-			$handler = new self($action, $resource, $params, 'html');
-			$handler->handle();
-			$handler->response->notImplemented('Format not supported: "' . $format . '"');
-			$handler->view = 'error';
-			$handler->response->h1 = '404 not found';
-			$handler->response->content = '';
-			return $handler;
 		}
 
 		if ($action !== 'read') {
@@ -202,10 +198,9 @@ class Handler {
 		if ($format !== 'html') {
 			$handler = new self($action, $resource, $params, 'html');
 			$handler->handle();
+			$handler->view = 'error';
 			$handler->response->notFound('Format not supported: "' . $format . '"');
-			$handler->response->h1 = '404 not found';
-			$handler->response->content = '';
-			return $hander;
+			return $handler;
 		}
 
 		if ($resource === '') {
@@ -216,8 +211,6 @@ class Handler {
 		$handler->handle();
 		$handler->view = 'error';
 		$handler->response->badRequest();
-		$handler->response->h1 = '404 not found';
-		$handler->response->content = '';
 		return $handler;
 	}
 

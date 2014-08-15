@@ -43,11 +43,11 @@ abstract class Cache {
 	}
 
 	static private function getKey($resource, $params = []) {
-		$key = 'devipsum:' . $resource;
+		$cacheKey = 'devipsum:' . $resource;
 		foreach ($params as $key => $value) {
-			$key .= ':' . $key . '=' . (string) $value;
+			$cacheKey .= ':' . $key . '=' . $value;
 		}
 
-		return $key;
+		return $cacheKey;
 	}
 }

@@ -19,7 +19,10 @@ abstract class DevIpsum {
 	static public $format;
 
 	static public function init() {
-		ob_start();
+		if (!Config::DEV_MODE) {
+			ob_start();
+		}
+
 		self::$error = false;
 		self::$dtz = new DateTimeZone('UTC');
 
@@ -113,25 +116,26 @@ abstract class DevIpsum {
 
 			if ($handler !== null) {
 				$handler->handle();
-				ob_end_clean();
+				if (!Config::DEV_MODE) {
+					ob_end_clean();
+				}
 
-				$handler->view();
+				$handler->view(self::$api ? 'api' : 'www');
 			}
 		} catch (Exception $exception) {
-			// handle internal server errors
 			self::internalError($exception);
 		}
 	}
 
 	static public function fatalHandler() {
 		if (error_get_last() !== null) {
+			//echo error_get_last();
 			self::internalError('A fatal server error has occurred');
 		}
 	}
 
 	static public function internalError($message = null) {
 		self::$error = true;
-		ob_end_clean();
 
 		$action = (isset(Handler::$actions[self::$method]) ? Handler::$actions[self::$method] : strtolower(self::$method));
 		$message = ($message === null ? 'An unknown error has occurred' : $message);
@@ -139,6 +143,10 @@ abstract class DevIpsum {
 		$handler = new Handler($action, self::$resource, self::$params, self::$format);
 		$handler->handle();
 		$handler->response->internalError($message);
-		$handler->view();
+		if (!Config::DEV_MODE) {
+			ob_end_clean();
+		}
+
+		$handler->view(self::$api ? 'api' : 'www', true);
 	}
 }
