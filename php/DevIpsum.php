@@ -85,7 +85,10 @@ abstract class DevIpsum {
 
 		// params
 		if (self::$method === 'GET') {
-			self::$params = $_GET;
+			self::$params = [];
+			foreach ($_GET as $key => $value) {
+				self::$params[rawurldecode($key)] = Handler::decodeParam($value);
+			}
 		}
 
 		// request

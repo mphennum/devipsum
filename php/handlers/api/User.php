@@ -20,10 +20,13 @@ class User extends Handler {
 
 	public function __construct($method, $resource, $params, $format) {
 		parent::__construct($method, $resource, $params, $format);
+		$this->paramList = ['n'];
 	}
 
 	public function handle() {
-		parent::handle();
+		if (!parent::handle()) {
+			return false;
+		}
 
 		$n = (isset($this->params['n']) ? $this->params['n'] : 1);
 		if ((int) $n !== $n || $n > 100 || $n < 1) {
@@ -154,5 +157,7 @@ class User extends Handler {
 
 		$this->response->setTTL(Config::MICRO_CACHE);
 		$this->response->users = $users;
+
+		return true;
 	}
 }

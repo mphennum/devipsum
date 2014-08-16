@@ -12,5 +12,7 @@ class Text extends Handler {
 
 	public function handle() {
 		parent::handle();
+
+		$this->response->text = 'Lorem ipsum.';
 	}
 }

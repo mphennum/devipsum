@@ -45,7 +45,7 @@ abstract class Cache {
 	static private function getKey($resource, $params = []) {
 		$cacheKey = 'devipsum:' . $resource;
 		foreach ($params as $key => $value) {
-			$cacheKey .= ':' . $key . '=' . $value;
+			$cacheKey .= ':' . $key . '=' . serialize($value);
 		}
 
 		return $cacheKey;

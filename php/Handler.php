@@ -8,6 +8,7 @@ use DevIpsum\Handlers\API\User;
 use DevIpsum\Handlers\API\Text;
 use DevIpsum\Handlers\WWW\Docs;
 use DevIpsum\Handlers\WWW\Home;
+use DevIpsum\Database\Request;
 
 class Handler {
 
@@ -35,6 +36,8 @@ class Handler {
 	public $request;
 	public $response;
 
+	public $paramList;
+
 	public function __construct($action, $resource, $params, $format) {
 		$this->action = $action;
 		$this->resource = $resource;
@@ -44,13 +47,27 @@ class Handler {
 		$this->view = null;
 
 		$this->response = new Response();
+
+		$this->paramList = [];
 	}
 
 	public function handle() {
-		// do nothing
+		$badParams = [];
+		foreach ($this->params as $key => $value) {
+			if (!in_array($key, $this->paramList)) {
+				$badParams[] = rawurldecode($key);
+			}
+		}
+
+		if (count($badParams) !== 0) {
+			$this->response->notAcceptable('Invalid parameter(s): ' . implode(', ', $badParams));
+			return false;
+		}
+
+		return true;
 	}
 
-	public function view($server, $force = false) {
+	public function view($server, $forced = false) {
 		$request = [
 			'action' => $this->action,
 			'resource' => $this->resource,
@@ -109,11 +126,11 @@ class Handler {
 			], $duration);
 		}
 
-		self::trueView($this->view, $headers, $request, $result, $status, $force);
+		self::trueView($this->view, $headers, $request, $result, $status, $forced);
 	}
 
-	static public function trueView($view, $headers, $request, $result, $status, $force = false) {
-		if (DevIpsum::$error && !$force) {
+	static public function trueView($view, $headers, $request, $result, $status, $forced = false) {
+		if (DevIpsum::$error && !$forced) {
 			return;
 		}
 
@@ -129,17 +146,32 @@ class Handler {
 
 		if (!Config::DEV_MODE) {
 			ob_end_flush();
+			ob_start();
 		}
+
+		self::log($view, $request, $status);
+
+		if (!Config::DEV_MODE) {
+			ob_end_clean();
+		}
+	}
+
+	// pass in if it was cached as well
+	static public function log($view, $request, $status) {
+		$log = new Request();
+		$log->action = $request['action'];
+		$log->resource = $request['resource'];
+		$log->params = serialize($request['params']);
+		$log->format = $request['format'];
+		$log->view = $view;
+		$log->status = $status['code'];
+		$log->create();
 	}
 
 	// factory
 
 	static public function apiFactory($method, $resource, $params, $format) {
 		$action = (isset(self::$actions[$method]) ? self::$actions[$method] : strtolower($method));
-
-		foreach ($params as &$param) {
-			$param = self::decodeParam($param);
-		}
 
 		$cache = Cache::get('api:' . $resource, $params);
 		if ($cache !== false) {
@@ -178,10 +210,6 @@ class Handler {
 	static public function wwwFactory($method, $resource, $params, $format) {
 		$action = (isset(self::$actions[$method]) ? self::$actions[$method] : strtolower($method));
 
-		foreach ($params as &$param) {
-			$param = self::decodeParam($param);
-		}
-
 		$cache = Cache::get('www:' . $resource, $params);
 		if ($cache !== false) {
 			self::trueView($cache['view'], $cache['headers'], $cache['request'], $cache['result'], $cache['status']);
@@ -216,7 +244,7 @@ class Handler {
 
 	// params
 
-	static private function decodeParam($param) {
+	static public function decodeParam($param) {
 		$param = rawurldecode($param);
 
 		if ($param === '' || $param === 'true') {

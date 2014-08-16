@@ -17,6 +17,7 @@ require __DIR__ . '/database/Row.php';
 require __DIR__ . '/database/City.php';
 require __DIR__ . '/database/Domain.php';
 require __DIR__ . '/database/Name.php';
+require __DIR__ . '/database/Request.php';
 require __DIR__ . '/database/State.php';
 require __DIR__ . '/database/Street.php';
 
