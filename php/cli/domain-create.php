@@ -13,7 +13,7 @@ if (isset($options['help'])) {
 	CLI::message('Create domain:');
 	CLI::message('usage: ', 'domain-create.php [OPTIONS]');
 	CLI::message('-n     ', 'name or comma delimited list of names');
-	CLI::message('-t     ', 'type of domain (email)');
+	CLI::message('-t     ', 'type of domain (' . implode(', ', Domain::$types) . ')');
 	exit(0);
 }
 

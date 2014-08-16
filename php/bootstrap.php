@@ -20,6 +20,7 @@ require __DIR__ . '/database/Name.php';
 require __DIR__ . '/database/Request.php';
 require __DIR__ . '/database/State.php';
 require __DIR__ . '/database/Street.php';
+require __DIR__ . '/database/Word.php';
 
 if (PHP_SAPI === 'cli') {
 	require __DIR__ . '/CLI.php';

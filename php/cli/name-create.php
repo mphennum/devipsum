@@ -13,7 +13,7 @@ if (isset($options['help'])) {
 	CLI::message('Create name:');
 	CLI::message('usage: ', 'name-create.php [OPTIONS]');
 	CLI::message('-n     ', 'name or comma delimited list of names');
-	CLI::message('-t     ', 'type of name (first, or last)');
+	CLI::message('-t     ', 'type of name (' . implode(', ', Name::$types) . ')');
 	CLI::message('-m     ', 'male');
 	CLI::message('-f     ', 'female');
 	exit(0);
