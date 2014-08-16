@@ -142,6 +142,7 @@ class Handler {
 			ob_start('ob_gzhandler');
 		}
 
+		--$status['ttl'];
 		include __DIR__ . '/views/' . self::$formats[$view] . '.php';
 
 		if (!Config::DEV_MODE) {
