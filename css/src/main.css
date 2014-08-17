@@ -1,0 +1,129 @@
+/*
+colors, light to dark
+	#E1E6B9
+	#C4D7A4
+	#ABC8A4
+	#375D3B
+	#183128
+*/
+
+/* reset */
+
+* {
+	background: transparent;
+	border: none;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	font-size: 100%;
+	font-weight: 400;
+	line-height: 1.3em;
+	outline: none;
+	vertical-align: baseline;
+
+	margin: 0;
+	padding: 0;
+	z-index: 1;
+}
+
+/* main */
+
+body {
+	background: #F8F8F8;
+	color: #333;
+	font-family: "Open Sans", Arial, Helvetica, sans-serif;
+	font-size: 14px;
+
+	padding: 10px;
+}
+
+a, a:visited {
+	color: #375D3B;
+	text-decoration: underline;
+}
+
+/* header */
+
+header {
+	background: #183128;
+	text-align: center;
+
+	padding: 10px;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+
+header a {
+	color: #FFF !important;
+	font-size: 18px;
+	font-weight: bold;
+
+	text-decoration: none;
+}
+
+/* main */
+
+main {
+	background: #FFF;
+	border-top: 3px solid #ABC8A4;
+	box-shadow: 0 0 10px 1px #EEE;
+
+	padding: 10px 10px 5px 10px;
+	margin: 45px auto 0 auto;
+	width: 100%;
+	max-width: 700px;
+}
+
+h1 {
+	font-size: 20px;
+	font-weight: bold;
+
+	margin-bottom: 5px;
+}
+
+h2 {
+	font-size: 16px;
+	font-weight: bold;
+
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+p {
+	margin-bottom: 5px;
+}
+
+/* form */
+
+input {
+	background: #F8F8F8;
+	border: 1px solid #DDD;
+	color: #777;
+
+	padding: 3px 1px;
+	width: 135px;
+}
+
+textarea {
+	background: #F8F8F8;
+	border: 1px solid #DDD;
+	color: #777;
+
+	padding: 5px;
+	width: 100%;
+	height: 500px;
+	max-width: 100%;
+}
+
+button {
+	background: #375D3B;
+	border-radius: 5px;
+	color: #FFF;
+	cursor: pointer;
+	font-weight: bold;
+
+	padding: 4px 6px;
+}
