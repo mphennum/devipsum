@@ -57,7 +57,7 @@ header {
 }
 
 header a {
-	color: #FFF !important;
+	color: #FFF;
 	font-size: 18px;
 	font-weight: bold;
 
