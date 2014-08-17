@@ -117,7 +117,7 @@ class User extends Handler {
 			}
 
 			if ($profile > self::$profiles['both']) {
-				$profile = $gender . '-' . $profile . '.png';
+				$profile = $gender . '-' . ($profile - self::$profiles['both']) . '.png';
 			} else {
 				$profile = 'both-' . $profile . '.png';
 			}

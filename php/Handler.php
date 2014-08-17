@@ -23,8 +23,7 @@ class Handler {
 		'home' => 'home.html',
 		'error' => 'error.html',
 
-		'json' => 'json',
-		'xml' => 'xml'
+		'json' => 'json'
 	];
 
 	public $action;
@@ -51,7 +50,16 @@ class Handler {
 		$this->paramList = [];
 	}
 
+	public function hasError() {
+		$status = $this->response->getStatus();
+		return ($status['code'] !== 200);
+	}
+
 	public function handle() {
+		if ($this->hasError()) {
+			return false;
+		}
+
 		$badParams = [];
 		foreach ($this->params as $key => $value) {
 			if (!in_array($key, $this->paramList)) {
@@ -77,8 +85,6 @@ class Handler {
 
 		$result = $this->response->getResult();
 		$status = $this->response->getStatus();
-
-		//echo json_encode($request, JSON_PRETTY_PRINT), "\n", json_encode($result, JSON_PRETTY_PRINT), "\n", json_encode($status, JSON_PRETTY_PRINT), "\n";
 
 		foreach ($result as $key => $val) {
 			if ($key === 'request' || $key === 'result' || $key === 'status') {
@@ -129,6 +135,8 @@ class Handler {
 		self::trueView($this->view, $headers, $request, $result, $status, $forced);
 	}
 
+	// static
+
 	static public function trueView($view, $headers, $request, $result, $status, $forced = false) {
 		if (DevIpsum::$error && !$forced) {
 			return;
@@ -174,24 +182,22 @@ class Handler {
 	static public function apiFactory($method, $resource, $params, $format) {
 		$action = (isset(self::$actions[$method]) ? self::$actions[$method] : strtolower($method));
 
-		$cache = Cache::get('api:' . $resource, $params);
-		if ($cache !== false) {
-			self::trueView($cache['view'], $cache['headers'], $cache['request'], $cache['result'], $cache['status']);
-			return null;
-		}
-
 		if (!isset(self::$formats[$format])) {
 			$handler = new self($action, $resource, $params, 'json');
-			$handler->handle();
-			$handler->response->notImplemented('Format not supported: "' . $format . '"');
+			$handler->response->notImplemented('Format not supported: ' . $format);
 			return $handler;
 		}
 
 		if ($action !== 'read') {
 			$handler = new self($action, $resource, $params, $format);
-			$handler->handle();
-			$handler->response->methodNotAllowed('Method not allowed: "' . $method . '"');
+			$handler->response->methodNotAllowed('Method not allowed: ' . $method);
 			return $handler;
+		}
+
+		$cache = Cache::get('api:' . $resource, $params);
+		if ($cache !== false) {
+			self::trueView($cache['view'], $cache['headers'], $cache['request'], $cache['result'], $cache['status']);
+			return null;
 		}
 
 		if ($resource === 'user') {
@@ -203,7 +209,6 @@ class Handler {
 		}
 
 		$handler = new self($action, $resource, $params, $format);
-		$handler->handle();
 		$handler->response->badRequest();
 		return $handler;
 	}
@@ -211,25 +216,23 @@ class Handler {
 	static public function wwwFactory($method, $resource, $params, $format) {
 		$action = (isset(self::$actions[$method]) ? self::$actions[$method] : strtolower($method));
 
-		$cache = Cache::get('www:' . $resource, $params);
-		if ($cache !== false) {
-			self::trueView($cache['view'], $cache['headers'], $cache['request'], $cache['result'], $cache['status']);
-			return null;
-		}
-
 		if ($action !== 'read') {
 			$handler = new self($action, $resource, $params, $format);
-			$handler->handle();
-			$handler->response->methodNotAllowed('Method not allowed: "' . $method . '"');
+			$handler->response->methodNotAllowed('Method not allowed: ' . $method);
 			return $handler;
 		}
 
 		if ($format !== 'html') {
 			$handler = new self($action, $resource, $params, 'html');
-			$handler->handle();
 			$handler->view = 'error';
-			$handler->response->notFound('Format not supported: "' . $format . '"');
+			$handler->response->notFound('Format not supported: ' . $format);
 			return $handler;
+		}
+
+		$cache = Cache::get('www:' . $resource, $params);
+		if ($cache !== false) {
+			self::trueView($cache['view'], $cache['headers'], $cache['request'], $cache['result'], $cache['status']);
+			return null;
 		}
 
 		if ($resource === '') {
@@ -237,7 +240,6 @@ class Handler {
 		}
 
 		$handler = new self($action, $resource, $params, $format);
-		$handler->handle();
 		$handler->view = 'error';
 		$handler->response->badRequest();
 		return $handler;

@@ -45,7 +45,7 @@ a, a:visited {
 /* header */
 
 header {
-	background: #183128;
+	background: #375D3B;
 	text-align: center;
 
 	padding: 10px;
@@ -96,11 +96,46 @@ p {
 	margin-bottom: 5px;
 }
 
+hr {
+	background: #E1E6B9;
+
+	height: 2px;
+}
+
+/* user */
+
+.di-user {
+	background-color: #F8F8F8;
+	border: 1px solid #F0F0F0;
+	border-radius: 5px;
+
+	clear: both;
+	padding: 5px;
+	min-height: 70px;
+}
+
+.di-user > * {
+	display: block;
+
+	margin-bottom: 3px;
+}
+
+.di-user-name {
+	font-weight: bold;
+}
+
+.di-user-profile {
+	border-radius: 10px;
+
+	float: left;
+	margin-right: 5px;
+}
+
 /* form */
 
 input {
 	background: #F8F8F8;
-	border: 1px solid #DDD;
+	border: 1px solid #F0F0F0;
 	color: #777;
 
 	padding: 3px 1px;
@@ -109,7 +144,7 @@ input {
 
 textarea {
 	background: #F8F8F8;
-	border: 1px solid #DDD;
+	border: 1px solid #F0F0F0;
 	color: #777;
 
 	padding: 5px;

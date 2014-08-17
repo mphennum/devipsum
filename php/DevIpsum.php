@@ -144,7 +144,6 @@ abstract class DevIpsum {
 		$message = ($message === null ? 'An unknown error has occurred' : $message);
 
 		$handler = new Handler($action, self::$resource, self::$params, self::$format);
-		$handler->handle();
 		$handler->response->internalError($message);
 		if (!Config::DEV_MODE) {
 			ob_end_clean();

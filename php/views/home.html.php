@@ -24,30 +24,74 @@
 <p>source: <a href="//github.com/mphennum/devipsum/">github.com/mphennum/devipsum</a></p>
 <p>docs: <a href="//github.com/mphennum/devipsum/wiki/">github.com/mphennum/devipsum/wiki</a></p>
 
+<hr>
+
 <h2>Examples</h2>
 <p>user request: <a href="http://api.devipsum.com/user.json?n=10">api.devipsum.com/user.json?n=10</a></p>
 <p>text request: <a href="http://api.devipsum.com/text.json?n=5">api.devipsum.com/text.json?n=5</a></p>
 
+<hr>
+
 <h2>Demo</h2>
-<p>api.devipsum.com/<input class="di-request" type="text" value="user.json"> <button class="di-send">try it out</button></p>
+<p>
+	api.devipsum.com/<input class="di-request" type="text" value="user.json?n=5">
+	<button class="di-send">try it out</button>
+</p>
 <!-- p>api.devipsum.com/<input class="di-request" type="text" value="text.json?n=5"> <button class="di-send">try it out</button></p -->
-<p><textarea class="di-response"></textarea></p>
+<div class="di-display" style="display: none"></div>
+<p><textarea class="di-text" style="display: none"></textarea></p>
 
 <script>
 (function() {
 
-var $response = $('.di-response');
+// response
+
+var $text = $('.di-text');
+var $display = $('.di-display');
 
 var request = function() {
 	var $request = $(this).parent().children('.di-request');
-	var jqXHR = $.getJSON('http://api.devipsum.com/' + $request.val()).always(function(jqXHR, textStatus, error) {
-		if (jqXHR.responseJSON) {
-			jqXHR = jqXHR.responseJSON;
-		}
 
-		$response.val(JSON.stringify(jqXHR, null, '  '));
+	$.getJSON('http://api.devipsum.com/' + $request.val()).always(function(resp, textStatus, error) {
+		resp = resp.responseJSON || resp;
+
+		$text.show();
+		$text.val(JSON.stringify(resp, null, '    '));
+
+		$display.show();
+		$display.empty();
+		if (resp && resp.result) {
+			if (resp.result.users) {
+				var users = resp.result.users;
+				for (var i = 0, n = users.length; i < n; i++) {
+					var user = users[i];
+					var $user = $('<p class="di-user" />');
+
+					var contact = user.contact;
+					var name = user.name.full;
+					var address = user.address;
+
+					$user.append('<img class="di-user-profile" width="60" height="60" src="' + contact.social.profile + '" alt="Profile picture for ' + name + '">');
+
+					$user.append('<span class="di-user-top"><span class="di-user-name">' + name + '</span> (' + user.birth.age + ' years old)</span>');
+
+					$user.append('<span class="di-user-address">Address: ' + address.street + ', ' + address.city + ', ' + address.state + ', ' + address.country + ', ' + address.zip + '</span>');
+
+					$user.append('<span class="di-user-contact">Contact: <a class="di-user-phone" href="tel:' + contact.phone + '">' + contact.phone + '</a>, <a class="di-user-email" href="mailto:' + contact.email + '">' + contact.email + '</a>');
+
+					$display.append($user);
+				}
+			} else if (resp.result.text) {
+				var text = resp.result.text;
+				for (var i = 0, n = text.length; i < n; i++) {
+					$display.append('<p>' + text[i] + '</p>');
+				}
+			}
+		}
 	});
 };
+
+// request
 
 $('.di-send').click(request);
 $('.di-request').keypress(function(e) {
