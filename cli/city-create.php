@@ -6,7 +6,7 @@ namespace DevIpsum;
 use DevIpsum\Database\City;
 use DevIpsum\Database\State;
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../lib/bootstrap.php';
 
 $options = getopt('n:s:', ['help']);
 

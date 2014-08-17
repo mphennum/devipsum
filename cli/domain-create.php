@@ -5,7 +5,7 @@ namespace DevIpsum;
 
 use DevIpsum\Database\Domain;
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../lib/bootstrap.php';
 
 $options = getopt('n:t:', ['help']);
 

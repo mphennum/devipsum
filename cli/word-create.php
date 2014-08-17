@@ -5,7 +5,7 @@ namespace DevIpsum;
 
 use DevIpsum\Database\Word;
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../lib/bootstrap.php';
 
 $options = getopt('w:l:', ['help']);
 
