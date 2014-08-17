@@ -94,7 +94,7 @@ class User extends Handler {
 			$gender = $first['gender'];
 
 			// dates
-			$ts = mt_rand(-631151999, 946684800); // 1950 to 2000
+			$ts = mt_rand(-631151999, 631152000); // 1950 to 1990
 			$date = new DateTime('now', DevIpsum::$dtz);
 			$date->setTimestamp($ts);
 			$age = (int) (($now - $ts) / ($daysInYear));
