@@ -37,7 +37,7 @@ body {
 	padding: 10px;
 }
 
-a, a:visited {
+a {
 	color: #375D3B;
 	text-decoration: underline;
 }
@@ -70,6 +70,7 @@ main {
 	background: #FFF;
 	border-top: 3px solid #ABC8A4;
 	box-shadow: 0 0 10px 1px #EEE;
+	display: block;
 
 	padding: 10px 10px 5px 10px;
 	margin: 45px auto 0 auto;

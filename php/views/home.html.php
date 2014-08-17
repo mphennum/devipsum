@@ -33,6 +33,7 @@
 <hr>
 
 <h2>Demo</h2>
+<p>Note: requests are cached for 15 seconds</p>
 <p>
 	api.devipsum.com/<input class="di-request" type="text" value="user.json?n=5">
 	<button class="di-send">try it out</button>
@@ -41,8 +42,12 @@
 <div class="di-display" style="display: none"></div>
 <p><textarea class="di-text" style="display: none"></textarea></p>
 
+</main>
+
 <script>
 (function() {
+
+$.support.cors = true;
 
 // response
 
@@ -56,9 +61,15 @@ var request = function() {
 		resp = resp.responseJSON || resp;
 
 		$text.show();
+		$display.show();
+
+		if (resp && resp.statusText && /access is denied/i.test(resp.statusText)) {
+			$text.val('Your browser is not supported.');
+			return;
+		}
+
 		$text.val(JSON.stringify(resp, null, '    '));
 
-		$display.show();
 		$display.empty();
 		if (resp && resp.result) {
 			if (resp.result.users) {
@@ -106,8 +117,6 @@ $('.di-request').keypress(function(e) {
 
 })();
 </script>
-
-</main>
 
 <?php include __DIR__ . '/ssi/scripts-async.html.php'; ?>
 

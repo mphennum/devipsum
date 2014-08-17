@@ -56,6 +56,15 @@ abstract class DevIpsum {
 
 		// headers
 		if (isset($_SERVER['HTTP_ORIGIN'])) {
+			if (isset($_SERVER['HTTP_ORIGIN'])) {
+				$origin = $_SERVER['HTTP_ORIGIN'];
+			} else if (isset($_SERVER['HTTP_REFERER'])) {
+				$origin = preg_replace('/((?:https?:\/\/)?[^\/]+).*$/', '$1', $_SERVER['HTTP_ORIGIN']);
+			} else {
+				$origin = '*';
+			}
+
+
 			header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
 			//header(Access-Control-Allow-Headers: ');
 			//header(Access-Control-Expose-Headers: ');
