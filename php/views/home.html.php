@@ -9,24 +9,59 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, target-densitydpi=high-dpi">
 
+<?php include __DIR__ . '/ssi/styles.html.php'; ?>
+<?php include __DIR__ . '/ssi/scripts-sync.html.php'; ?>
+
 </head>
 
 <body>
 
 <header><a href="http://<?= DevIpsum\Config::WWW_HOST ?>/">devipsum</a></header>
 
-<h1>Randomly generated development ipsum</h1>
-
 <main>
-	<p>source: <a href="//github.com/mphennum/devipsum/">github.com/mphennum/devipsum</a></p>
-	<p>docs: <a href="//github.com/mphennum/devipsum/wiki/">github.com/mphennum/devipsum/wiki</a></p>
-	<h2>Examples</h2>
-	<p>request: <a href="http://api.devipsum.com/user.json?n=10">api.devipsum.com/user.json?n=10</a></p>
-	<p>request: <a href="http://api.devipsum.com/text.json?n=5">api.devipsum.com/text.json?n=5</a></p>
+
+<h1>Randomly generated development ipsum</h1>
+<p>source: <a href="//github.com/mphennum/devipsum/">github.com/mphennum/devipsum</a></p>
+<p>docs: <a href="//github.com/mphennum/devipsum/wiki/">github.com/mphennum/devipsum/wiki</a></p>
+
+<h2>Examples</h2>
+<p>user request: <a href="http://api.devipsum.com/user.json?n=10">api.devipsum.com/user.json?n=10</a></p>
+<p>text request: <a href="http://api.devipsum.com/text.json?n=5">api.devipsum.com/text.json?n=5</a></p>
+
+<h2>Demo</h2>
+<p>api.devipsum.com/<input class="di-request" type="text" value="user.json"> <button class="di-send">try it out</button></p>
+<!-- p>api.devipsum.com/<input class="di-request" type="text" value="text.json?n=5"> <button class="di-send">try it out</button></p -->
+<p><textarea class="di-response"></textarea></p>
+
+<script>
+(function() {
+
+var $response = $('.di-response');
+
+var request = function() {
+	var $request = $(this).parent().children('.di-request');
+	var jqXHR = $.getJSON('http://api.devipsum.com/' + $request.val()).always(function(jqXHR, textStatus, error) {
+		if (jqXHR.responseJSON) {
+			jqXHR = jqXHR.responseJSON;
+		}
+
+		$response.val(JSON.stringify(jqXHR, null, '  '));
+	});
+};
+
+$('.di-send').click(request);
+$('.di-request').keypress(function(e) {
+	if (e.keyCode === 13 || e.charCode === 13) {
+		request.call(this);
+	}
+});
+
+})();
+</script>
+
 </main>
 
-
-<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-53886971-1','auto');ga('send','pageview');</script>
+<?php include __DIR__ . '/ssi/scripts-async.html.php'; ?>
 
 </body>
 
