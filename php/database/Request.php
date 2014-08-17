@@ -15,6 +15,9 @@ class Request extends Row {
 		$this->fields['format'] = null;
 		$this->fields['view'] = null;
 		$this->fields['status'] = null;
+		$this->fields['ip'] = null;
+		$this->fields['origin'] = null;
+		$this->fields['referer'] = null;
 		$this->fields['ts'] = null;
 	}
 
@@ -34,6 +37,10 @@ class Request extends Row {
 		}
 
 		if (!isset($this->fields['status'])) {
+			return false;
+		}
+
+		if (!isset($this->fields['ip'])) {
 			return false;
 		}
 

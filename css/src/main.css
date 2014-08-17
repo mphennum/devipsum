@@ -88,7 +88,6 @@ h2 {
 	font-size: 16px;
 	font-weight: bold;
 
-	margin-top: 5px;
 	margin-bottom: 5px;
 }
 
@@ -99,6 +98,7 @@ p {
 hr {
 	background: #E1E6B9;
 
+	margin-bottom: 5px;
 	height: 2px;
 }
 

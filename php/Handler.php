@@ -174,6 +174,16 @@ class Handler {
 		$log->format = $request['format'];
 		$log->view = $view;
 		$log->status = $status['code'];
+		$log->ip = $_SERVER['REMOTE_ADDR'];
+
+		if (isset($_SERVER['HTTP_ORIGIN'])) {
+			$log->origin = $_SERVER['HTTP_ORIGIN'];
+		}
+
+		if (isset($_SERVER['HTTP_REFERER'])) {
+			$log->referer = $_SERVER['HTTP_REFERER'];
+		}
+
 		$log->create();
 	}
 

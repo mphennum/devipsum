@@ -81,11 +81,15 @@ var request = function() {
 
 					$display.append($user);
 				}
+
+				$display.append('<hr>');
 			} else if (resp.result.text) {
 				var text = resp.result.text;
 				for (var i = 0, n = text.length; i < n; i++) {
 					$display.append('<p>' + text[i] + '</p>');
 				}
+
+				$display.append('<hr>');
 			}
 		}
 	});
