@@ -1,9 +1,9 @@
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet'>
 
 <?php if (DevIpsum\Config::DEV_MODE) { ?>
-<link href="//css.devipsum.com/src/main.css" rel="stylesheet">
+<link href="//<?= DevIpsum\Config::CSS_HOST ?>/src/main.css" rel="stylesheet">
 <?php } else { ?>
-<link href="//css.devipsum.com/min.css" rel="stylesheet">
+<link href="//<?= DevIpsum\Config::CSS_HOST ?>/min.css" rel="stylesheet">
 <?php } ?>
 
-<link rel="shortcut icon" href="//img.devipsum.com/favicon.png">
+<link rel="shortcut icon" href="//<?= DevIpsum\Config::IMG_HOST ?>/favicon.png">

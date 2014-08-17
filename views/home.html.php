@@ -27,8 +27,8 @@
 <hr>
 
 <h2>Examples</h2>
-<p>user request: <a href="http://api.devipsum.com/user.json?n=10">api.devipsum.com/user.json?n=10</a></p>
-<p>text request: <a href="http://api.devipsum.com/text.json?n=5">api.devipsum.com/text.json?n=5</a></p>
+<p>user request: <a href="//api.devipsum.com/user.json?n=10">api.devipsum.com/user.json?n=10</a></p>
+<p>text request: <a href="//api.devipsum.com/text.json?n=5">api.devipsum.com/text.json?n=5</a></p>
 
 <hr>
 
