@@ -151,7 +151,7 @@ class Handler {
 		}
 
 		--$status['ttl'];
-		include __DIR__ . '/views/' . self::$formats[$view] . '.php';
+		include __DIR__ . '/../views/' . self::$formats[$view] . '.php';
 
 		if (!Config::DEV_MODE) {
 			ob_end_flush();
