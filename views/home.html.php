@@ -21,8 +21,7 @@
 <main>
 
 <h1>Randomly generated development ipsum</h1>
-<p>source: <a href="//github.com/mphennum/devipsum/">github.com/mphennum/devipsum</a></p>
-<p>docs: <a href="//github.com/mphennum/devipsum/wiki/">github.com/mphennum/devipsum/wiki</a></p>
+<p><a href="//github.com/mphennum/devipsum/">github.com/mphennum/devipsum</a></p>
 
 <hr>
 
