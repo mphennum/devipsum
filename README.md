@@ -173,3 +173,15 @@ _Response structure_
 	}
 }
 ```
+
+# Status codes
+
+- 200 OK
+- 204 No content
+- 400 Bad request
+- 404 Not found
+- 405 Method not allowed
+- 406 Not acceptable
+- 417 Range not satisfiable
+- 500 Internal error
+- 501 Not implemented
