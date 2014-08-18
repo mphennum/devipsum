@@ -13,9 +13,9 @@ use DevIpsum\Database;
 class User extends Handler {
 
 	static public $profiles = [
-		'both' => 1,
-		'male' => 9,
-		'female' => 10
+		'both' => 7,
+		'male' => 35,
+		'female' => 41
 	];
 
 	public function __construct($method, $resource, $params, $format) {
