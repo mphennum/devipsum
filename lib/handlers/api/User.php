@@ -31,8 +31,8 @@ class User extends Handler {
 		// number of users
 
 		$n = (isset($this->params['n']) ? $this->params['n'] : 1);
-		if ((int) $n !== $n || $n > 100 || $n < 1) {
-			$this->response->rangeNotSatisfiable('Number of users must be an integer between 1 and 100');
+		if ((int) $n !== $n || $n > 25 || $n < 1) {
+			$this->response->rangeNotSatisfiable('Number of users must be an integer between 1 and 25');
 			return false;
 		}
 
