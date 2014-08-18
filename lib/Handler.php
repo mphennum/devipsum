@@ -272,11 +272,11 @@ class Handler {
 			return null;
 		}
 
-		if (preg_match('/^[0-9]+$/', $param)) {
+		if (preg_match('/^-?[0-9]+$/', $param)) {
 			return (int) $param;
 		}
 
-		if (preg_match('/^[0-9]?\.[0-9]+$/', $param)) {
+		if (preg_match('/^-?[0-9]?\.[0-9]+$/', $param)) {
 			return (float) $param;
 		}
 
