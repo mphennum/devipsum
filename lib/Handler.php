@@ -32,7 +32,6 @@ class Handler {
 	public $format;
 	public $view;
 
-	public $request;
 	public $response;
 
 	public $paramList;
