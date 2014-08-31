@@ -27,7 +27,7 @@ class Handler {
 	];
 
 	public $action;
-	public $resouce;
+	public $resource;
 	public $params;
 	public $format;
 	public $view;
