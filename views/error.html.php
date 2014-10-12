@@ -7,7 +7,7 @@
 
 <title>devipsum: error 404</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, target-densitydpi=high-dpi">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 
 <?php include __DIR__ . '/ssi/styles.html.php'; ?>
 <?php include __DIR__ . '/ssi/scripts-sync.html.php'; ?>
