@@ -107,45 +107,42 @@ var request = function() {
 			return;
 		}
 
-		if (resp.statusText && /access is denied/i.test(resp.statusText)) {
-			$text.val('Your browser is not supported.');
+		$text.val(JSON.stringify(resp, null, '\t'));
+		$display.empty();
+
+		if (!resp.result) {
 			return;
 		}
 
-		$text.val(JSON.stringify(resp, null, '\t'));
+		if (resp.result.users) {
+			var users = resp.result.users;
+			for (var i = 0, n = users.length; i < n; ++i) {
+				var user = users[i];
+				var $user = $('<p class="di-user"/>');
 
-		$display.empty();
-		if (resp && resp.result) {
-			if (resp.result.users) {
-				var users = resp.result.users;
-				for (var i = 0, n = users.length; i < n; ++i) {
-					var user = users[i];
-					var $user = $('<p class="di-user"/>');
+				var contact = user.contact;
+				var name = user.name.full;
+				var address = user.address;
 
-					var contact = user.contact;
-					var name = user.name.full;
-					var address = user.address;
+				$user.append('<img class="di-user-profile" src="' + contact.social.profile + '" alt="Profile picture for ' + name + '">');
 
-					$user.append('<img class="di-user-profile" width="60" height="60" src="' + contact.social.profile + '" alt="Profile picture for ' + name + '">');
+				$user.append('<span class="di-user-top"><span class="di-user-name">' + name + '</span> (' + user.birth.age + ' years old)</span>');
 
-					$user.append('<span class="di-user-top"><span class="di-user-name">' + name + '</span> (' + user.birth.age + ' years old)</span>');
+				$user.append('<span class="di-user-address">Address: ' + address.street + ', ' + address.city + ', ' + address.state + ', ' + address.country + ', ' + address.zip + '</span>');
 
-					$user.append('<span class="di-user-address">Address: ' + address.street + ', ' + address.city + ', ' + address.state + ', ' + address.country + ', ' + address.zip + '</span>');
+				$user.append('<span class="di-user-contact">Contact: <a class="di-user-phone" href="tel:' + contact.phone + '">' + contact.phone + '</a>, <a class="di-user-email" href="mailto:' + contact.email + '">' + contact.email + '</a>');
 
-					$user.append('<span class="di-user-contact">Contact: <a class="di-user-phone" href="tel:' + contact.phone + '">' + contact.phone + '</a>, <a class="di-user-email" href="mailto:' + contact.email + '">' + contact.email + '</a>');
-
-					$display.append($user);
-				}
-
-				$display.append('<hr>');
-			} else if (resp.result.text) {
-				var text = resp.result.text;
-				for (var i = 0, n = text.length; i < n; i++) {
-					$display.append('<p>' + text[i] + '</p>');
-				}
-
-				$display.append('<hr>');
+				$display.append($user);
 			}
+
+			$display.append('<hr>');
+		} else if (resp.result.text) {
+			var text = resp.result.text;
+			for (var i = 0, n = text.length; i < n; ++i) {
+				$display.append('<p>' + text[i] + '</p>');
+			}
+
+			$display.append('<hr>');
 		}
 	});
 };
