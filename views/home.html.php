@@ -37,45 +37,90 @@
 	api.devipsum.com/<input class="di-request" type="text" value="user.json?n=5">
 	<button class="di-send">try it out</button>
 </p>
-<!-- p>api.devipsum.com/<input class="di-request" type="text" value="text.json?n=5"> <button class="di-send">try it out</button></p -->
 <div class="di-display" style="display: none"></div>
 <p><textarea class="di-text" style="display: none"></textarea></p>
 
 </main>
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
 (function() {
 
-$.support.cors = true;
+var $ = window.jQuery;
+var JSON = window.JSON;
 
 // response
 
 var $text = $('.di-text');
 var $display = $('.di-display');
 
+var noop = function() {};
+
+var requestXHR = function(url, callback) {
+	callback = callback || noop;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url, true);
+
+	var complete = false;
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && !complete) {
+			complete = true;
+			callback(JSON.parse(xhr.responseText));
+		}
+	};
+
+	xhr.send(null);
+};
+
+var requestXDR = function(url, callback) {
+	callback = callback || noop;
+
+	var xdr = new XDomainRequest();
+	xdr.onprogress = noop;
+	xdr.ontimeout = noop;
+	xdr.onerror = noop;
+
+	var complete = false;
+	xdr.onload = function() {
+		if (!complete) {
+			complete = true;
+			callback(JSON.parse(xdr.responseText));
+		}
+	};
+
+	xdr.open('GET', url);
+	xdr.send();
+};
+
+var trueRequest = (XMLHttpRequest && 'withCredentials' in new XMLHttpRequest()) ? requestXHR : requestXDR;
+
 var request = function() {
 	var $request = $(this).parent().children('.di-request');
 
-	$.getJSON('http://api.devipsum.com/' + $request.val()).always(function(resp, textStatus, error) {
-		resp = resp.responseJSON || resp;
-
+	trueRequest('http://api.devipsum.com/' + $request.val(), function(resp) {
 		$text.show();
 		$display.show();
 
-		if (resp && resp.statusText && /access is denied/i.test(resp.statusText)) {
+		if (!resp) {
+			$text.val('Error connecting to server.');
+			return;
+		}
+
+		if (resp.statusText && /access is denied/i.test(resp.statusText)) {
 			$text.val('Your browser is not supported.');
 			return;
 		}
 
-		$text.val(JSON.stringify(resp, null, '    '));
+		$text.val(JSON.stringify(resp, null, '\t'));
 
 		$display.empty();
 		if (resp && resp.result) {
 			if (resp.result.users) {
 				var users = resp.result.users;
-				for (var i = 0, n = users.length; i < n; i++) {
+				for (var i = 0, n = users.length; i < n; ++i) {
 					var user = users[i];
-					var $user = $('<p class="di-user" />');
+					var $user = $('<p class="di-user"/>');
 
 					var contact = user.contact;
 					var name = user.name.full;
@@ -108,8 +153,8 @@ var request = function() {
 // request
 
 $('.di-send').click(request);
-$('.di-request').keypress(function(e) {
-	if (e.keyCode === 13 || e.charCode === 13) {
+$('.di-request').keypress(function(event) {
+	if (event.keyCode === 13 || event.charCode === 13) {
 		request.call(this);
 	}
 });
