@@ -1,5 +1,3 @@
-<link href='//fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet'>
-
 <?php if (DevIpsum\Config::DEV_MODE) { ?>
 <link href="//<?= DevIpsum\Config::CSS_HOST ?>/src/main.css" rel="stylesheet">
 <?php } else { ?>
