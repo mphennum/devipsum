@@ -16,7 +16,7 @@
 
 <body>
 
-<header><a href="http://<?= DevIpsum\Config::WWW_HOST ?>/">devipsum</a></header>
+<header><a href="//<?= DevIpsum\Config::WWW_HOST ?>/">devipsum</a></header>
 
 <main>
 
@@ -26,15 +26,15 @@
 <hr>
 
 <h2>Examples</h2>
-<p>user request: <a href="//api.devipsum.com/user.json?n=10">api.devipsum.com/user.json?n=10</a></p>
-<p>text request: <a href="//api.devipsum.com/text.json?n=5">api.devipsum.com/text.json?n=5</a></p>
+<p>user request: <a href="//<?= DevIpsum\Config::API_HOST ?>/user.json?n=10"><?= DevIpsum\Config::API_HOST ?>/user.json?n=10</a></p>
+<p>text request: <a href="//<?= DevIpsum\Config::API_HOST ?>/text.json?n=5"><?= DevIpsum\Config::API_HOST ?>/text.json?n=5</a></p>
 
 <hr>
 
 <h2>Demo</h2>
 <p>Note: requests are cached for 15 seconds</p>
 <p>
-	api.devipsum.com/<input class="di-request" type="text" value="user.json?n=5">
+	<?= DevIpsum\Config::API_HOST ?>/<input class="di-request" type="text" value="user.json?n=5">
 	<button class="di-send">try it out</button>
 </p>
 <div class="di-display" style="display: none"></div>
@@ -98,7 +98,7 @@ var trueRequest = (XMLHttpRequest && 'withCredentials' in new XMLHttpRequest()) 
 var request = function() {
 	var $request = $(this).parent().children('.di-request');
 
-	trueRequest('http://api.devipsum.com/' + $request.val(), function(resp) {
+	trueRequest('http://<?= DevIpsum\Config::API_HOST ?>/' + $request.val(), function(resp) {
 		$text.show();
 		$display.show();
 

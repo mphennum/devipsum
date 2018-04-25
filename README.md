@@ -2,19 +2,19 @@
 
 _Lorem ipsum for development. Randomly generated users, text, images, etc._
 
-[devipsum.com](http://www.devipsum.com/)
+[devipsum.mphennum.com](http://devipsum.mphennum.com/)
 
 # Request structure
 
 ```
-api.devipsum.com/resource.json?param1=value1&param2=value2&etc
+devipsum-api.mphennum.com/resource.json?param1=value1&param2=value2&etc
 ```
 
 # User resource
 
 _A random list of users_
 
-__Example__: [api.devipsum.com/user.json?n=3](http://api.devipsum.com/user.json?n=3)
+__Example__: [devipsum-api.mphennum.com/user.json?n=3](http://devipsum-api.mphennum.com/user.json?n=3)
 
 - __n__ (number of users)
 	- default: 1
@@ -56,7 +56,7 @@ __Example__: [api.devipsum.com/user.json?n=3](http://api.devipsum.com/user.json?
 					"phone": "(664) 224-2536",
 					"email": "rflores@zoho.com",
 					"social": {
-						"profile": "http://img.devipsum.com/profile/male-35.png",
+						"profile": "http://devipsum-img.mphennum.com/profile/male-35.png",
 						"google": "http://plus.google.com/+rflores",
 						"facebook": "http://www.facebook.com/rflores",
 						"twitter": "http://twitter.com/rflores"
@@ -87,7 +87,7 @@ __Example__: [api.devipsum.com/user.json?n=3](http://api.devipsum.com/user.json?
 					"phone": "(691) 275-2899",
 					"email": "mrice@yahoo.com",
 					"social": {
-						"profile": "http://img.devipsum.com/profile/male-34.png",
+						"profile": "http://devipsum-img.mphennum.com/profile/male-34.png",
 						"google": "http://plus.google.com/+mrice",
 						"facebook": "http://www.facebook.com/mrice",
 						"twitter": "http://twitter.com/mrice"
@@ -118,7 +118,7 @@ __Example__: [api.devipsum.com/user.json?n=3](http://api.devipsum.com/user.json?
 					"phone": "(707) 575-1655",
 					"email": "whill@inbox.com",
 					"social": {
-						"profile": "http://img.devipsum.com/profile/male-9.png",
+						"profile": "http://devipsum-img.mphennum.com/profile/male-9.png",
 						"google": "http://plus.google.com/+whill",
 						"facebook": "http://www.facebook.com/whill",
 						"twitter": "http://twitter.com/whill"
@@ -141,7 +141,7 @@ __Example__: [api.devipsum.com/user.json?n=3](http://api.devipsum.com/user.json?
 
 _Random lorem ipsum / latin text_
 
-__Example__: [api.devipsum.com/text.json?n=2](http://api.devipsum.com/text.json?n=2)
+__Example__: [devipsum-api.mphennum.com/text.json?n=2](http://devipsum-api.mphennum.com/text.json?n=2)
 
 - __n__ (number of paragraphs)
 	- default: 1
