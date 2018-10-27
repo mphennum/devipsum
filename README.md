@@ -2,7 +2,7 @@
 
 _Lorem ipsum for development. Randomly generated users, text, images, etc._
 
-[devipsum.mphennum.com](http://devipsum.mphennum.com/)
+[devipsum.mphennum.com](https://devipsum.mphennum.com/)
 
 # Request structure
 
@@ -14,7 +14,7 @@ devipsum-api.mphennum.com/resource.json?param1=value1&param2=value2&etc
 
 _A random list of users_
 
-__Example__: [devipsum-api.mphennum.com/user.json?n=3](http://devipsum-api.mphennum.com/user.json?n=3)
+__Example__: [devipsum-api.mphennum.com/user.json?n=3](https://devipsum-api.mphennum.com/user.json?n=3)
 
 - __n__ (number of users)
 	- default: 1
@@ -56,12 +56,12 @@ __Example__: [devipsum-api.mphennum.com/user.json?n=3](http://devipsum-api.mphen
 					"phone": "(664) 224-2536",
 					"email": "rflores@zoho.com",
 					"social": {
-						"profile": "http://devipsum-img.mphennum.com/profile/male-35.png",
-						"google": "http://plus.google.com/+rflores",
-						"facebook": "http://www.facebook.com/rflores",
-						"twitter": "http://twitter.com/rflores"
+						"profile": "https://devipsum-img.mphennum.com/profile/male-35.png",
+						"google": "https://plus.google.com/+rflores",
+						"facebook": "https://www.facebook.com/rflores",
+						"twitter": "https://twitter.com/rflores"
 					},
-					"website": "http://www.rflores.com/"
+					"website": "https://www.rflores.com/"
 				}
 			},
 			{
@@ -87,12 +87,12 @@ __Example__: [devipsum-api.mphennum.com/user.json?n=3](http://devipsum-api.mphen
 					"phone": "(691) 275-2899",
 					"email": "mrice@yahoo.com",
 					"social": {
-						"profile": "http://devipsum-img.mphennum.com/profile/male-34.png",
-						"google": "http://plus.google.com/+mrice",
-						"facebook": "http://www.facebook.com/mrice",
-						"twitter": "http://twitter.com/mrice"
+						"profile": "https://devipsum-img.mphennum.com/profile/male-34.png",
+						"google": "https://plus.google.com/+mrice",
+						"facebook": "https://www.facebook.com/mrice",
+						"twitter": "https://twitter.com/mrice"
 					},
-					"website": "http://www.mrice.com/"
+					"website": "https://www.mrice.com/"
 				}
 			},
 			{
@@ -118,12 +118,12 @@ __Example__: [devipsum-api.mphennum.com/user.json?n=3](http://devipsum-api.mphen
 					"phone": "(707) 575-1655",
 					"email": "whill@inbox.com",
 					"social": {
-						"profile": "http://devipsum-img.mphennum.com/profile/male-9.png",
-						"google": "http://plus.google.com/+whill",
-						"facebook": "http://www.facebook.com/whill",
-						"twitter": "http://twitter.com/whill"
+						"profile": "https://devipsum-img.mphennum.com/profile/male-9.png",
+						"google": "https://plus.google.com/+whill",
+						"facebook": "https://www.facebook.com/whill",
+						"twitter": "https://twitter.com/whill"
 					},
-					"website": "http://www.whill.com/"
+					"website": "https://www.whill.com/"
 				}
 			}
 		]
@@ -141,7 +141,7 @@ __Example__: [devipsum-api.mphennum.com/user.json?n=3](http://devipsum-api.mphen
 
 _Random lorem ipsum / latin text_
 
-__Example__: [devipsum-api.mphennum.com/text.json?n=2](http://devipsum-api.mphennum.com/text.json?n=2)
+__Example__: [devipsum-api.mphennum.com/text.json?n=2](https://devipsum-api.mphennum.com/text.json?n=2)
 
 - __n__ (number of paragraphs)
 	- default: 1
