@@ -16,7 +16,7 @@
 
 <body>
 
-<header><a href="http://<?= DevIpsum\Config::WWW_HOST ?>/">devipsum</a></header>
+<header><a href="//<?= DevIpsum\Config::WWW_HOST ?>/">devipsum</a></header>
 
 <main>
 	<h1>Error 404</h1>

@@ -98,7 +98,7 @@ var trueRequest = (XMLHttpRequest && 'withCredentials' in new XMLHttpRequest()) 
 var request = function() {
 	var $request = $(this).parent().children('.di-request');
 
-	trueRequest('http://<?= DevIpsum\Config::API_HOST ?>/' + $request.val(), function(resp) {
+	trueRequest('//<?= DevIpsum\Config::API_HOST ?>/' + $request.val(), function(resp) {
 		$text.show();
 		$display.show();
 
